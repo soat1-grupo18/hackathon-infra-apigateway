@@ -6,6 +6,23 @@
         "version": "1.0.1"
     },
     "paths": {
+        "/pontos": {
+            "post": {
+                "security": [
+                    {
+                        "fiap-cognito-hackathon-authorized": []
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "connectionId": "${vpclink_id}",
+                    "httpMethod": "POST",
+                    "uri": "http://ms-ponto.internal.hackathon.fiap.com/pontos",
+                    "passthroughBehavior": "when_no_match",
+                    "connectionType": "VPC_LINK",
+                    "type": "http_proxy"
+                }
+            }
+        },
         "/pontos/{param}": {
             "get": {
                 "parameters": [
@@ -26,9 +43,9 @@
                 "x-amazon-apigateway-integration": {
                     "connectionId": "${vpclink_id}",
                     "httpMethod": "GET",
-                    "uri": "http://ms-ponto.internal.hackathon.fiap.com/pontos/{matricula}",
+                    "uri": "http://ms-ponto.internal.hackathon.fiap.com/pontos/{usuario}",
                     "requestParameters": {
-                        "integration.request.path.matricula": "method.request.path.param"
+                        "integration.request.path.usuario": "method.request.path.param"
                     },
                     "passthroughBehavior": "when_no_match",
                     "connectionType": "VPC_LINK",
@@ -36,8 +53,18 @@
                 }
             }
         },
-        "/pontos": {
-            "post": {
+        "/pontos/espelho-mes-anterior/{param}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "param",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "security": [
                     {
                         "fiap-cognito-hackathon-authorized": []
@@ -45,8 +72,11 @@
                 ],
                 "x-amazon-apigateway-integration": {
                     "connectionId": "${vpclink_id}",
-                    "httpMethod": "POST",
-                    "uri": "http://ms-ponto.internal.hackathon.fiap.com/pontos",
+                    "httpMethod": "GET",
+                    "uri": "http://ms-ponto.internal.hackathon.fiap.com/pontos/espelho-mes-anterior/{usuario}",
+                    "requestParameters": {
+                        "integration.request.path.usuario": "method.request.path.param"
+                    },
                     "passthroughBehavior": "when_no_match",
                     "connectionType": "VPC_LINK",
                     "type": "http_proxy"
