@@ -3,7 +3,7 @@
     "info": {
         "title": "fiap-rest-api",
         "description": "FIAP REST API for FIAP ECS Cluster",
-        "version": "1.0"
+        "version": "1.0.1"
     },
     "paths": {
         "/pontos/{param}": {
