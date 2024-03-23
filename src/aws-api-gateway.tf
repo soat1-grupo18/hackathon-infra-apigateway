@@ -32,7 +32,7 @@ resource "aws_api_gateway_rest_api" "this" {
             connectionId         = aws_api_gateway_vpc_link.this.id
             payloadFormatVersion = "1.0"
             type                 = "HTTP_PROXY"
-            uri                  = "http://ms-ponto.hackathon.fiap.local/pontos"
+            uri                  = "http://ms-ponto.internal.hackathon.fiap.com/pontos"
           }
         }
       }
@@ -46,7 +46,7 @@ resource "aws_api_gateway_rest_api" "this" {
             connectionId         = aws_api_gateway_vpc_link.this.id
             payloadFormatVersion = "1.0"
             type                 = "HTTP_PROXY"
-            uri                  = "http://ms-ponto.hackathon.fiap.local/pontos/{matricula}"
+            uri                  = "http://ms-ponto.internal.hackathon.fiap.com/pontos/{matricula}"
             requestParameters = {
               "integration.request.path.matricula" : "method.request.path.param"
             }
