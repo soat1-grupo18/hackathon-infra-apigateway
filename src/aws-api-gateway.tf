@@ -1,6 +1,6 @@
 resource "aws_api_gateway_vpc_link" "this" {
-  name        = "eks-ingress"
-  description = "EKS Ingress VPC Link"
+  name        = "ecs-vpclink"
+  description = "ECS VPC Link"
   target_arns = [data.aws_lb.lb_vpclink.arn]
 }
 
