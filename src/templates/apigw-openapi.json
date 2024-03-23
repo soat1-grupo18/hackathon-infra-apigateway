@@ -38,6 +38,11 @@
         },
         "/pontos": {
             "post": {
+                "security": [
+                    {
+                        "fiap-cognito-hackathon-authorized": []
+                    }
+                ],
                 "x-amazon-apigateway-integration": {
                     "connectionId": "${vpclink_id}",
                     "httpMethod": "POST",
