@@ -1,0 +1,103 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "fiap-rest-api",
+        "description": "FIAP REST API for FIAP ECS Cluster",
+        "version": "1.0.1"
+    },
+    "paths": {
+        "/pontos": {
+            "post": {
+                "security": [
+                    {
+                        "fiap-cognito-hackathon-authorized": []
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "connectionId": "${vpclink_id}",
+                    "httpMethod": "POST",
+                    "uri": "http://ms-ponto.internal.hackathon.fiap.com/pontos",
+                    "passthroughBehavior": "when_no_match",
+                    "connectionType": "VPC_LINK",
+                    "type": "http_proxy"
+                }
+            }
+        },
+        "/pontos/{param}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "param",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "fiap-cognito-hackathon-authorized": []
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "connectionId": "${vpclink_id}",
+                    "httpMethod": "GET",
+                    "uri": "http://ms-ponto.internal.hackathon.fiap.com/pontos/{usuario}",
+                    "requestParameters": {
+                        "integration.request.path.usuario": "method.request.path.param"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "connectionType": "VPC_LINK",
+                    "type": "http_proxy"
+                }
+            }
+        },
+        "/pontos/espelho-mes-anterior/{param}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "param",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "fiap-cognito-hackathon-authorized": []
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "connectionId": "${vpclink_id}",
+                    "httpMethod": "GET",
+                    "uri": "http://ms-ponto.internal.hackathon.fiap.com/pontos/espelho-mes-anterior/{usuario}",
+                    "requestParameters": {
+                        "integration.request.path.usuario": "method.request.path.param"
+                    },
+                    "passthroughBehavior": "when_no_match",
+                    "connectionType": "VPC_LINK",
+                    "type": "http_proxy"
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "fiap-cognito-hackathon-authorized": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "x-amazon-apigateway-authtype": "cognito_user_pools",
+                "x-amazon-apigateway-authorizer": {
+                    "providerARNs": [
+                        "${cognito_userpool_arn}"
+                    ],
+                    "type": "cognito_user_pools"
+                }
+            }
+        }
+    }
+}

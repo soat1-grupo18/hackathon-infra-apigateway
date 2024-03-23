@@ -3,12 +3,12 @@
 Infra API Gateway com Terraform.
 
 - [hackathon-infra-apigateway](#hackathon-infra-apigateway)
-  - [Tech Challenge](#tech-challenge)
+  - [Hackathon](#hackathon)
   - [Alunos](#alunos)
 
-## Tech Challenge
+## Hackathon
 
-Projeto realizado durante o quarto módulo da Pós Tech Software Architecture da FIAP.
+Projeto realizado durante o Hackathon da Pós Tech Software Architecture da FIAP.
 
 ## Alunos
 

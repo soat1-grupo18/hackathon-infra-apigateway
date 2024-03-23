@@ -1,75 +1,13 @@
 resource "aws_api_gateway_vpc_link" "this" {
-  name        = "eks-ingress"
-  description = "EKS Ingress VPC Link"
+  name        = "ecs-vpclink"
+  description = "ECS VPC Link"
   target_arns = [data.aws_lb.lb_vpclink.arn]
 }
 
 resource "aws_api_gateway_rest_api" "this" {
-  body = jsonencode({
-    openapi = "3.0.1"
-    info = {
-      title   = "fiap-tech-challenge"
-      version = "1.0"
-    }
-    paths = {
-      "/autenticar" = {
-        post = {
-          x-amazon-apigateway-integration = {
-            httpMethod           = "POST"
-            payloadFormatVersion = "1.0"
-            type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${module.lambda_authenticator.lambda_function_arn}/invocations"
-          }
-        }
-      }
-      "/pontos" = {
-        post = {
-          security = [
-          ]
-          x-amazon-apigateway-integration = {
-            httpMethod           = "POST"
-            connectionType       = "VPC_LINK"
-            connectionId         = aws_api_gateway_vpc_link.this.id
-            payloadFormatVersion = "1.0"
-            type                 = "HTTP_PROXY"
-            uri                  = "http://ms-ponto.hackathon.fiap.local/pontos"
-          }
-        }
-      }
-      "/pontos/{param}" = {
-        get = {
-          security = [
-          ]
-          x-amazon-apigateway-integration = {
-            httpMethod           = "GET"
-            connectionType       = "VPC_LINK"
-            connectionId         = aws_api_gateway_vpc_link.this.id
-            payloadFormatVersion = "1.0"
-            type                 = "HTTP_PROXY"
-            uri                  = "http://ms-ponto.hackathon.fiap.local/pontos/{matricula}"
-            requestParameters = {
-              "integration.request.path.matricula" : "method.request.path.param"
-            }
-          }
-        }
-      }
-    }
-    components = {
-      securitySchemes = {
-        fiap-authorizer = {
-          type                         = "apiKey"
-          name                         = "Authorization"
-          in                           = "header"
-          x-amazon-apigateway-authtype = "custom"
-          x-amazon-apigateway-authorizer = {
-            type                         = "token"
-            authorizerUri                = "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${module.lambda_authorizer.lambda_function_arn}/invocations"
-            authorizerResultTtlInSeconds = 0
-          }
-        }
-      }
-
-    }
+  body = templatefile("${path.module}/templates/apigw-openapi.json", {
+    vpclink_id           = aws_api_gateway_vpc_link.this.id
+    cognito_userpool_arn = aws_cognito_user_pool.this.arn
   })
 
   name        = "fiap-rest-api"
